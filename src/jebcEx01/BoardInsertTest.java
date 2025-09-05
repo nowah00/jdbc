@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UserInsertTest {
+public class BoardInsertTest {
     public static void main(String[] args) {
         String DriverName = "com.mysql.cj.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/bookmarketdb?serverTimezone=Asia/Seoul";
