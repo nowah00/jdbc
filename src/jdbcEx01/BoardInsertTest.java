@@ -10,8 +10,6 @@ public class BoardInsertTest {
         String username = "root";
         String password = "mysql1234";
 
-
-
         try{
             Class.forName(DriverName);
             System.out.println("Driver loaded OK!");
@@ -48,15 +46,11 @@ public class BoardInsertTest {
                 }
                 rs.close();
             }
-
             if (result == 1) {
                 System.out.println("Insert successful!");
             }
-
-
         } catch (Exception e) {
             System.out.println("Connection established!" + e);
         }
-
     }
 }

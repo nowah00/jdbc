@@ -1,4 +1,4 @@
-package jebcEx01;
+package jdbcEx01;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
