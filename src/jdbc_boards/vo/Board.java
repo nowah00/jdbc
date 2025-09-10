@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +18,10 @@ public class Board {
     private String bcontent;
     private String bwriter;
     private Date bdate;
+
+    @Override
+    public boolean equals(Object o){
+        Board board = (Board) o;
+        return this.bno == board.bno;
+    }
 }

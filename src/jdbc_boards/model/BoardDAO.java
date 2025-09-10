@@ -13,7 +13,9 @@ public class BoardDAO {
     List<Board> boardList = new ArrayList<>();
 
     public boolean createBoard(Board board) {
-
+        if (boardList.isEmpty()){
+            boardList = searchAll();
+        }
             // 1. Connection 필요
             conn = DBUtil.getConnection();
             // 2.쿼리 생성
@@ -44,6 +46,7 @@ public class BoardDAO {
     }
 
     public List<Board> searchAll(){
+        boardList.clear();
         // 1.Connection 연결
         conn = DBUtil.getConnection();
         // 2.쿼리 작성
@@ -51,19 +54,20 @@ public class BoardDAO {
         // 3. DB 서버로 request 할 객체 생성
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Board board = new Board();
-                board.setBno(rs.getInt(1));
-                board.setBtitle(rs.getString(2));
-                board.setBcontent(rs.getString(3));
-                board.setBwriter(rs.getString(4));
-                board.setBdate(rs.getDate(5));
-                boardList.add(board);
-            }
+            if (rs != null) {
+                while (rs.next()) {
+                    Board board = new Board();
+                    board.setBno(rs.getInt(1));
+                    board.setBtitle(rs.getString(2));
+                    board.setBcontent(rs.getString(3));
+                    board.setBwriter(rs.getString(4));
+                    board.setBdate(rs.getDate(5));
+                    boardList.add(board);
+                }
+            } return boardList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return boardList;
     }
 
     public Board searchOne(int bno){
@@ -85,26 +89,64 @@ public class BoardDAO {
                 oneBoard.setBcontent(rs.getString(3));
                 oneBoard.setBwriter(rs.getString(4));
                 oneBoard.setBdate(rs.getDate(5));
+                return oneBoard;
+            } else {
+                System.out.println("해당 글이 존재하지 않습니다.");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return oneBoard; // 선택한 보드를 리턴
+        return null; // 선택한 보드를 리턴
     }
 
-    public Board updateBoard(int bno){
+    public boolean updateBoard(Board board){
+        if (boardList.isEmpty()){
+            boardList = searchAll();
+        }
 
         conn = DBUtil.getConnection();
 
-        String sql = "UPDATE BoardTable SET (btitle, bcontent, bwriter, bdate) = (?,?,?,NOW()) WHERE bno = ?";
+        String sql = "UPDATE BoardTable SET btitle = ?, bcontent = ? WHERE bno = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(4, bno);
+            pstmt.setString(1, board.getBtitle());
+            pstmt.setString(2, board.getBcontent());
+            pstmt.setInt(3, board.getBno());
+
+            int ack =  pstmt.executeUpdate();
+
+            if (ack > 0){
+                int index = boardList.indexOf(board);
+                boardList.set(index,board);
+                return true;
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
+            e.printStackTrace();
+        } return false;
     }
 
-//    public boolean deleteBoard(int bno){}
+    public boolean deleteBoard(int bno) {
+        if (boardList.isEmpty()){ // 기존 데이터베이스에 있는 최신 데이터를 가져오기 위해서
+            boardList = searchAll();
+        }
+
+        conn = DBUtil.getConnection();
+
+        String sql = "DELETE FROM boardTable WHERE bno = ?";
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, bno);
+
+            int ack = pstmt.executeUpdate();
+
+            if (ack > 0)  {
+                Board board = searchOne(bno);
+                boardList.remove(board);
+                return true;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
