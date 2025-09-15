@@ -8,6 +8,5 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BoardMenu boardMenu = new BoardMenu();
         boardMenu.boardMenu();
-
     }
 }

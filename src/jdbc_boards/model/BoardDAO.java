@@ -1,5 +1,5 @@
 package jdbc_boards.model;
-
+    
 import jdbc_boards.util.DBUtil;
 import jdbc_boards.vo.Board;
 
@@ -90,8 +90,6 @@ public class BoardDAO {
                 oneBoard.setBwriter(rs.getString(4));
                 oneBoard.setBdate(rs.getDate(5));
                 return oneBoard;
-            } else {
-                System.out.println("해당 글이 존재하지 않습니다.");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -18,8 +18,9 @@ public class BoardMenu {
     }
 
     public void boardMenu() throws IOException {
+        KIKI:
         while(true) {
-            System.out.println("메인 메뉴: 1.Create | 2.Read | 3.Update | 4.Clear | 5.Exit");
+            System.out.println("\n메인 메뉴: 1.Create | 2.Read | 3.Update | 4.Delete | 5.Exit");
             System.out.print("메뉴 선택: ");
             int choice = 0;
             try {
@@ -52,7 +53,7 @@ public class BoardMenu {
                     }
                     break;
                 case 4:
-                    System.out.println("[삭제할 글 번호 입력]");
+                    System.out.println("\n[삭제할 글 번호 입력]");
                     System.out.print("> ");
                     int bno = Integer.parseInt(input.readLine());
                     boolean ko = dao.deleteBoard(bno);
@@ -62,14 +63,15 @@ public class BoardMenu {
                     }
                     break;
                 case 5:
-                    System.out.println("Exit");
+                    System.out.println("[종료]");
+                    break KIKI;
             }
         }
     }
 
     public Board boardDataInput() throws IOException{
         Board board = new Board();
-        System.out.println("[새로운 글 입력]");
+        System.out.println("\n[새로운 글 입력]");
         System.out.println("제목 입력");
         System.out.print("> ");
         String title =input.readLine();
@@ -86,8 +88,8 @@ public class BoardMenu {
     }
 
     public void readOption() throws IOException {
-        System.out.println("메인 메뉴: 1.모든 글 | 2.원하는 글");
-        System.out.print("메뉴 선택: ");
+        System.out.println("\n메인 메뉴: 1.Select All | 2.Select One");
+        System.out.print("> ");
         int readChoice = 0;
         try{
             readChoice = Integer.parseInt(input.readLine());
@@ -104,18 +106,20 @@ public class BoardMenu {
                 boardList.stream().sorted(Comparator.comparing(Board::getBno).reversed()).forEach(System.out::println);
                 break;
             case 2:
-                System.out.println("[보드 번호를 입력하세요.]");
+                System.out.println("\n[보드 번호를 입력하세요.]");
                 System.out.print("> ");
                 int bno = Integer.parseInt(input.readLine());
                 Board oneBoard = dao.searchOne(bno);
-                System.out.println(oneBoard);
+                if (oneBoard == null) {
+                    System.out.println("[해당 글이 없습니다.]");
+                } else {System.out.println(oneBoard);}
                 break;
         }
     }
 
     public Board boardDataUpdate() throws IOException{
         Board board = new Board();
-        System.out.println("[수정할 글 번호 입력]");
+        System.out.println("\n[수정할 글 번호 입력]");
         System.out.print("> ");
         int bno = Integer.parseInt(input.readLine());
         board.setBno(bno);
