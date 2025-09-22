@@ -9,7 +9,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class inquiryVO {
+public class Inquiry {
     private String inquiry_id;
     private Date inquiry_date;
     private String inquiry_category_name;

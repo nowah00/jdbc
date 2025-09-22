@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class noticeVO {
-    private String notice_id;
-    private String notice_title;
-    private Date notice_date;
-    private boolean notice_fixed;
+public class FAQ {
+    private String FAQ_id;
+    private String FAQ_category_name;
+    private String FAQ_content;
     private String member_id;
+    private String manager_id;
 }
